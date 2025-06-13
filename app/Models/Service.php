@@ -2,12 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\Filter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Service extends Model
 {
+    use Filter;
     protected $guarded = ['id'];
 
     protected $hidden = [

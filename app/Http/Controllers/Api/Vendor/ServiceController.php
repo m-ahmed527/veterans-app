@@ -7,6 +7,7 @@ use App\Models\AddOn;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class ServiceController extends Controller
@@ -78,6 +79,7 @@ class ServiceController extends Controller
     public function update(Request $request, Service $service)
     {
         try {
+            Gate::authorize('update', $service);
             $data = $this->sanitizedUpdateRequest($request, $service);
             // dd($service->load(['category', 'addOns']));
             DB::beginTransaction();
@@ -104,7 +106,7 @@ class ServiceController extends Controller
                 'status.boolean' => 'Status must be 1 or 0',
             ]);
             $service->update(['status' => $request->status]);
-            return responseSuccess('Service status updated successfully', $service->load(['category','addOns']));
+            return responseSuccess('Service status updated successfully', $service->load(['category', 'addOns']));
         } catch (\Exception $e) {
             return responseError($e->getMessage(), 400);
         }

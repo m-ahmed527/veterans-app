@@ -15,10 +15,20 @@ class VendorMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // dd($request->user(),$request->user()->isVendor());
+        // dd($request->route('product'));
+        // $product = $request->route('product');
+        // $service = $request->route('service');
         if (!$request->user() || !$request->user()->isVendor()) {
             return responseError('Unauthorized access', 403);
         }
+
+        // if ($product && ($product->user_id !== $request->user()->id)) {
+        //     return responseError('Unauthorized access', 403);
+        // }
+
+        // if ($service && ($service->user_id !== $request->user()->id)) {
+        //     return responseError('Unauthorized access', 403);
+        // }
         return $next($request);
     }
 }

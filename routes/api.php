@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
+use App\Http\Controllers\Api\User\CartController;
 use App\Http\Controllers\Api\User\ProductController;
 use App\Http\Controllers\Api\User\ProfileController;
 use App\Http\Controllers\Api\User\ServiceController;
@@ -53,4 +54,13 @@ Route::middleware('auth:sanctum')->prefix('services')->controller(ServiceControl
 Route::middleware('auth:sanctum')->prefix('products')->controller(ProductController::class)->group(function () {
     Route::get('/all-products', 'getAllProducts')->withoutMiddleware('is_vendor');
     Route::get('/single-product/{id}', 'show')->withoutMiddleware('is_vendor');
+});
+
+
+Route::middleware('auth:sanctum')->prefix('cart')->controller(CartController::class)->group(function () {
+    Route::get('/get-cart', 'index');
+    Route::post('/add-to-cart', 'store');
+    Route::post('/update-cart', 'store');
+    Route::post('/remove-from-cart', 'removeFromCart');
+    Route::post('/clear-cart', 'destroy');
 });

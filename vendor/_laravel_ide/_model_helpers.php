@@ -316,7 +316,7 @@ namespace App\Models {
      *
      * @property \Illuminate\Support\Carbon|null $updated_at
      * @property \Illuminate\Support\Carbon|null $created_at
-     * @property mixed $total_quantity
+     * @property mixed $total_items
      * @property float $total_amount
      * @property float $sub_total_amount
      * @property float $discount_value
@@ -334,7 +334,7 @@ namespace App\Models {
      * @method static \Illuminate\Database\Eloquent\Builder<Cart>|Cart whereDiscountValue($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Cart>|Cart whereSubTotalAmount($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Cart>|Cart whereTotalAmount($value)
-     * @method static \Illuminate\Database\Eloquent\Builder<Cart>|Cart whereTotalQuantity($value)
+     * @method static \Illuminate\Database\Eloquent\Builder<Cart>|Cart whereTotalItems($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Cart>|Cart whereCreatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Cart>|Cart whereUpdatedAt($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Cart>|Cart newModelQuery()
@@ -962,6 +962,8 @@ namespace App\Models {
      * @property-read \App\Models\Category $category
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Cart> $cart
      * @property-read int|null $cart_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $wishlistedByUsers
+     * @property-read int|null $wishlistedByUsers_count
      * @method static \Illuminate\Database\Eloquent\Builder<Product>|Product whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Product>|Product whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Product>|Product whereCategoryId($value)
@@ -1288,6 +1290,8 @@ namespace App\Models {
      * @property-read \App\Models\Category $category
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AddOn> $addOns
      * @property-read int|null $addOns_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $wishlistedByUsers
+     * @property-read int|null $wishlistedByUsers_count
      * @method static \Illuminate\Database\Eloquent\Builder<Service>|Service whereId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Service>|Service whereUserId($value)
      * @method static \Illuminate\Database\Eloquent\Builder<Service>|Service whereCategoryId($value)
@@ -1626,6 +1630,10 @@ namespace App\Models {
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $products
      * @property-read int|null $products_count
      * @property-read \App\Models\Cart $cart
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Product> $wishlistedProducts
+     * @property-read int|null $wishlistedProducts_count
+     * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Service> $wishlistedServices
+     * @property-read int|null $wishlistedServices_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
      * @property-read int|null $notifications_count
      * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens

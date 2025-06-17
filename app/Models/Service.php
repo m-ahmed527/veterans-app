@@ -6,6 +6,7 @@ use App\Traits\Filter;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 class Service extends Model
 {
@@ -34,5 +35,10 @@ class Service extends Model
         return $this->belongsToMany(AddOn::class, 'add_on_service', 'service_id', 'add_on_id')
             ->withPivot('add_on_name', 'service_name', 'add_on_price')
             ->withTimestamps();
+    }
+
+    public function wishlistedByUsers(): MorphToMany
+    {
+        return $this->morphToMany(User::class, 'wishlistable', 'wishlists')->withTimestamps();
     }
 }

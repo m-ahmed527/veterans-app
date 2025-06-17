@@ -39,7 +39,6 @@ class CartController extends Controller
             DB::beginTransaction();
             $cart = Cart::firstOrCreate(['user_id' => auth()->id()]);
             $product = Product::findOrFail($request->product_id);
-            // dd($request->all(), $product, $cart);
             $total = $product->price * $request->quantity;
 
             $cart->products()->syncWithoutDetaching([
@@ -50,10 +49,7 @@ class CartController extends Controller
                 ]
             ]);
             $this->recalculateCart($cart);
-            // $cartProduct = $cart->products()
-            //     ->where('product_id', $request->product_id)
-            //     ->with('category', 'cart')
-            //     ->first();
+
             $cartProduct = $cart->load(['products' => function ($q) use ($product) {
                 $q->where('product_id', $product->id)->with('category');
             }]);

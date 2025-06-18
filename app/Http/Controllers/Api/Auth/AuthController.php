@@ -18,7 +18,7 @@ use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
-    use Response;
+
     /**
      * Display a listing of the resource.
      */
@@ -37,7 +37,7 @@ class AuthController extends Controller
             // dd($request->all());
             $request->validate(
                 [
-                    'avatar' => 'required|image',
+                    'avatar' => 'nullable|image',
                     'username' => 'required|string|max:255',
                     'email' => 'required|email|max:255|unique:users,email',
                     'role' => 'required|in:user,vendor,admin',

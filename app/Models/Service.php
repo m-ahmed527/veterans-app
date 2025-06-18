@@ -41,4 +41,9 @@ class Service extends Model
     {
         return $this->morphToMany(User::class, 'wishlistable', 'wishlists')->withTimestamps();
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

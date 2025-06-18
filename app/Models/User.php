@@ -100,4 +100,9 @@ class User extends Authenticatable
     {
         return $this->morphedByMany(Service::class, 'wishlistable', 'wishlists')->withTimestamps();
     }
+
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class);
+    }
 }

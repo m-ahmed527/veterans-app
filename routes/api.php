@@ -2,11 +2,15 @@
 
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
+use App\Http\Controllers\Api\User\AddOnController;
+use App\Http\Controllers\Api\User\BookingController;
 use App\Http\Controllers\Api\User\CartController;
+use App\Http\Controllers\Api\User\CategoryController;
 use App\Http\Controllers\Api\User\ProductController;
 use App\Http\Controllers\Api\User\ProfileController;
 use App\Http\Controllers\Api\User\ServiceController;
 use App\Http\Controllers\Api\User\WishlistController;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +50,16 @@ Route::middleware('auth:sanctum')->controller(ProfileController::class)->group(f
     Route::post('/edit/profile/{user}', 'update');
 });
 
+Route::middleware('auth:sanctum')->prefix('category')->controller(CategoryController::class)->group(function () {
+    Route::get('/all-cateogries', 'index')->withoutMiddleware('is_vendor');
+    Route::get('/single-category/{id}', 'show')->withoutMiddleware('is_vendor');
+});
+Route::middleware('auth:sanctum')->prefix('addon')->controller(AddOnController::class)->group(function () {
+    Route::get('/all-addons', 'index')->withoutMiddleware('is_vendor');
+    Route::get('/single-addon/{id}', 'show')->withoutMiddleware('is_vendor');
+});
+
+
 Route::middleware('auth:sanctum')->prefix('services')->controller(ServiceController::class)->group(function () {
     Route::get('/all-services', 'getAllServices')->withoutMiddleware('is_vendor');
     Route::get('/single-service/{id}', 'show')->withoutMiddleware('is_vendor');
@@ -71,4 +85,10 @@ Route::middleware('auth:sanctum')->prefix('wishlist')->controller(WishlistContro
     Route::post('/add-to-wishlist', 'add');
     Route::post('/remove-from-wishlist', 'remove');
     Route::post('/clear-wishlist', 'clear');
+});
+
+
+Route::middleware('auth:sanctum')->prefix('booking')->controller(BookingController::class)->group(function () {
+    Route::get('/get-bookings', 'index');
+    Route::post('/make-booking', 'store');
 });

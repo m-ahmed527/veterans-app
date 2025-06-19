@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\AddOn;
 use App\Models\Booking;
 use App\Models\Service;
+use App\Models\Tax;
+use App\Rules\AddOnForService;
 use App\Rules\FutureBookingTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -30,11 +32,10 @@ class BookingController extends Controller
             DB::beginTransaction();
             $booking = Booking::create($data);
             if ($request->add_ons) {
-                // dd($request->all());
                 $this->bindAddOnsToBooking($request, $booking, $data);
             }
             DB::commit();
-            return responseSuccess('Now Please make payemnt to confirm your booking', $booking->load(['service', 'addOns']));
+            return responseSuccess('Now Please make payment to confirm your booking', $booking->load(['service', 'addOns']));
         } catch (\Exception $e) {
             DB::rollBack();
             return responseError($e->getMessage(), 400);
@@ -66,7 +67,7 @@ class BookingController extends Controller
             'booking_time_from' => 'required|date_format:H:i',
             'booking_time_to' => 'required|date_format:H:i|after:booking_time_from',
             'add_ons' => 'nullable|array',
-            'add_ons.*' => 'exists:add_on_service,add_on_id',
+            'add_ons.*' => ['exists:add_on_service,add_on_id', new AddOnForService($request->service_id)],
             // 'booking_date_time' => ['required', new FutureBookingTime], // Apply custom rule here
         ], [
             'service_id.required' => 'Service is required.',
@@ -87,6 +88,7 @@ class BookingController extends Controller
             'booking_date' => ['required', new FutureBookingTime], // Custom validation for future date-time
         ]);
         $service = Service::find($request->service_id);
+        $tax = Tax::where('name', 'plateform tax')->where('is_active', true)->first();
         $basePrice = $service->price;
         $data = [
             'user_id' => auth()->id(),
@@ -97,12 +99,11 @@ class BookingController extends Controller
             'booking_time_from' => $request->booking_time_from ?? null,
             'booking_time_to' => $request->booking_time_to ?? null,
             'base_price' => $basePrice,
-            'tax_price' => 20, // Assuming a fixed tax price for simplicity
+            'tax_price' => $tax->taxAmount($basePrice), // Assuming a fixed tax price for simplicity
             'total_price' => $basePrice,
             'booking_status' => 'pending',
             'payment_status' => 'unpaid',
         ];
-
         return $data;
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\TaxController;
 use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\Auth\EmailVerificationController;
 use App\Http\Controllers\Api\User\AddOnController;
@@ -91,4 +92,12 @@ Route::middleware('auth:sanctum')->prefix('wishlist')->controller(WishlistContro
 Route::middleware('auth:sanctum')->prefix('booking')->controller(BookingController::class)->group(function () {
     Route::get('/get-bookings', 'index');
     Route::post('/make-booking', 'store');
+});
+
+Route::middleware('auth:sanctum')->prefix('tax')->controller(TaxController::class)->group(function () {
+    Route::get('/all-taxes', 'index');
+    Route::post('/create-tax', 'store');
+    Route::get('/single-tax/{id}', 'show');
+    Route::put('/update-tax/{id}', 'update');
+    Route::delete('/delete-tax/{id}', 'destroy');
 });
